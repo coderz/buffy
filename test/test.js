@@ -7,10 +7,11 @@ describe('#bind/flush', function() {
   var test = false;
 
   it('should create a function that buffer itself', function() {
-    (buffer.bind(function(cbl) {
-      test = true;
+    (buffer.bind(function(testarg, testarg1, cbl) {
+      expect(testarg).to.be(1);
+      expect(testarg1).to.be(2);
       setTimeout(cbl, 500);
-    }))();
+    }))(1, 2, function() { test = true; });
   });
 
   it('should be executed once flush is called', function(done) {
@@ -25,10 +26,11 @@ describe('#buffer/flush', function() {
   var test = false;
 
   it('should bufferize a function', function() {
-    buffer.buffer(function(cbl) {
-      test = true;
+    buffer.buffer(function(testarg, testarg1, cbl) {
+      expect(testarg).to.be(1);
+      expect(testarg1).to.be(2);
       setTimeout(cbl, 500);
-    });
+    }, 1, 2, function() { test = true; });
   });
 
   it('should be executed once flush is called', function(done) {
